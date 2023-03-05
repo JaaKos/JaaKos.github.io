@@ -105,7 +105,7 @@ window.addEventListener('load', ()=>{
         let pos = getMousePos(canvas, e);
         for (let i = 0; i < 5; i++)
         {
-            if (Math.hypot(pos.x-circles[i][0]-10, pos.y-circles[i][1]-10) < 26)
+            if (Math.hypot(pos.x-circles[i][0], pos.y-circles[i][1]) < 26)
             {
                 score++;
                 document.getElementById("score").innerHTML = score;
