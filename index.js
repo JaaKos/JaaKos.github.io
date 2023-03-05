@@ -1,4 +1,5 @@
 window.addEventListener('load', ()=>{
+    let stopped = true;
     let score = 0;
     let timeleft = 10;
     let timervar;
@@ -8,6 +9,7 @@ window.addEventListener('load', ()=>{
     gameStarted = false;
     document.getElementById("score").innerHTML = score;
     document.getElementById("time").innerHTML = timeleft;
+    let animationframe = null;
 
     const canvas = document.querySelector("#canvasid");
     const ctx = canvas.getContext("2d");
@@ -18,11 +20,14 @@ window.addEventListener('load', ()=>{
 
     function randomPosition()
     {
-        return [Math.abs(Math.random()*canvas.width-100)+50, Math.abs(Math.random()*canvas.height-100)+50, (Math.random()-0.5)*3, (Math.random()-0.5)*3];
+        return [Math.abs(Math.random()*canvas.width-100)+50, Math.abs(Math.random()*canvas.height-100)+50, (Math.random()-0.5)*4, (Math.random()-0.5)*4];
     }
 
     function drawCircles()
     {
+        canvas.height = canvas.height;
+        canvas.width = canvas.width;
+        ctx.clearRect(0,0, canvas.height, canvas.width);
         ctx.fillStyle = "red";
         ctx.strokeStyle = "black";
         for (let i = 0; i < 5; i++)
@@ -32,7 +37,15 @@ window.addEventListener('load', ()=>{
             ctx.arc(circles[i][0], circles[i][1], 25, 0, 2 * Math.PI);
             ctx.stroke();
             ctx.fill();
+            if (circles[i][0] < 25 || circles[i][0] > canvas.width-25) circles[i][2] *= -1;
+            if (circles[i][1] < 25 || circles[i][1] > canvas.height-25) circles[i][3] *= -1;
+            if (!stopped)
+            {
+                circles[i][0] += circles[i][2];
+                circles[i][1] += circles[i][3];
+            }
         }
+        animationframe = requestAnimationFrame(drawCircles);
     }
 
 
@@ -40,22 +53,12 @@ window.addEventListener('load', ()=>{
     {
         if (!pausetimer)
         {
-            timeleft = timeleft-0.003;
-            canvas.height = canvas.height;
-            canvas.width = canvas.width;
-            for (let i = 0; i < 5; i++)
-            {
-                if (circles[i][0] < 25 || circles[i][0] > canvas.width-25) circles[i][2] *= -1;
-                if (circles[i][1] < 25 || circles[i][1] > canvas.height-25) circles[i][3] *= -1;
-                circles[i][0] += circles[i][2];
-                circles[i][1] += circles[i][3];
-            }
-            ctx.clearRect(0,0, canvas.height, canvas.width);
-            drawCircles();
+            timeleft = timeleft-0.015;
             document.getElementById("time").innerHTML = timeleft.toPrecision(2);
             if (timeleft < 0.1)
             {
                 gameStarted = false;
+                stopped = true;
                 document.getElementById("time").innerHTML = 0;
                 clearInterval(timervar);
             } 
@@ -65,18 +68,20 @@ window.addEventListener('load', ()=>{
     function startgame()
     {
         pausetimer = true;
-        clearInterval(timervar);
-        timeleft = 10;
-        gameStarted = true;
+        stopped = true;
+        cancelAnimationFrame(animationframe);
         circles = [];
         for (let i = 0; i < 5; i++)
         {
             circles.push(randomPosition());
         }
+        clearInterval(timervar);
+        timeleft = 10;
+        gameStarted = true;
         score = 0;
         timervar = setInterval(() => {
             timer();
-        }, 3);
+        }, 15);
         canvas.height = canvas.height;
         canvas.width = canvas.width;
         ctx.clearRect(0,0, canvas.height, canvas.width);
@@ -88,6 +93,7 @@ window.addEventListener('load', ()=>{
         if (gameStarted)
         {
         pausetimer = false;
+        stopped = false;
         for (let i = 0; i < 5; i++)
         {
             if (Math.hypot(e.x-circles[i][0]-10, e.y-circles[i][1]-10) < 26)
@@ -101,12 +107,3 @@ window.addEventListener('load', ()=>{
         }
     };
 })
-
-function startgame()
-{
-    gameStarted = true;
-    timeleft = 10;
-    score = 0;
-    clearInterval(timervar);
-    timervar;
-}
