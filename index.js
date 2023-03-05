@@ -10,6 +10,7 @@ window.addEventListener('load', ()=>{
     document.getElementById("score").innerHTML = score;
     document.getElementById("time").innerHTML = timeleft;
     let animationframe = null;
+    let start;
 
     const canvas = document.querySelector("#canvasid");
     const ctx = canvas.getContext("2d");
@@ -53,7 +54,7 @@ window.addEventListener('load', ()=>{
     {
         if (!pausetimer)
         {
-            timeleft = timeleft-0.015;
+            timeleft = (10000-(Date.now()-start))/1000;
             document.getElementById("time").innerHTML = timeleft.toPrecision(2);
             if (timeleft < 0.1)
             {
@@ -100,6 +101,7 @@ window.addEventListener('load', ()=>{
     {
         if (gameStarted)
         {
+        if (stopped) start = Date.now();
         pausetimer = false;
         stopped = false;
         let pos = getMousePos(canvas, e);
