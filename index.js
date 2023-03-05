@@ -40,6 +40,20 @@ window.addEventListener('load', ()=>{
             ctx.fill();
             if (circles[i][0] < 25 || circles[i][0] > canvas.width-25) circles[i][2] *= -1;
             if (circles[i][1] < 25 || circles[i][1] > canvas.height-25) circles[i][3] *= -1;
+            for (let j = 0; j < 5; j++)
+            {
+                if (j != i && Math.hypot(circles[i][0]-circles[j][0], circles[i][1]-circles[j][1]) < 51)
+                {
+                    let d = Math.sqrt(Math.pow(circles[i][0] - circles[j][0], 2) + Math.pow(circles[i][1] - circles[j][1], 2));
+                    let nx = (circles[j][0] - circles[i][0]) / d;
+                    let ny = (circles[j][1] - circles[i][1]) / d; 
+                    let p = 2 * (circles[i][2] * nx + circles[i][3] * ny - circles[j][2] * nx - circles[j][3] * ny) / 2;
+                    circles[i][2] = circles[i][2] - p * nx; 
+                    circles[i][3] = circles[i][3] - p * ny; 
+                    circles[j][2] = circles[j][2] + p * nx; 
+                    circles[j][3] = circles[j][3] + p * ny;
+                } 
+            }
             if (!stopped)
             {
                 circles[i][0] += circles[i][2];
@@ -71,15 +85,29 @@ window.addEventListener('load', ()=>{
         pausetimer = true;
         stopped = true;
         cancelAnimationFrame(animationframe);
-        circles = [];
-        for (let i = 0; i < 5; i++)
+        let goodFlag;
+        do
         {
-            circles.push(randomPosition());
-        }
+            circles = [];
+            goodFlag = true;
+            for (let i = 0; i < 5; i++)
+            {
+                circles.push(randomPosition());
+            }
+            for (let i = 0; i < 5; i++)
+            {
+                for (let j = 0; j < 5; j++)
+                {
+                    if (j != i && Math.hypot(circles[i][0]-circles[j][0], circles[i][1]-circles[j][1]) < 51) goodFlag = false;
+                }
+            }
+        }while (!goodFlag);
         clearInterval(timervar);
         timeleft = 10;
         gameStarted = true;
         score = 0;
+        document.getElementById("score").innerHTML = score;
+        document.getElementById("time").innerHTML = timeleft;
         timervar = setInterval(() => {
             timer();
         }, 15);
@@ -99,19 +127,30 @@ window.addEventListener('load', ()=>{
 
     onmousedown = function(e)
     {
+        let pos = getMousePos(canvas, e);
+        if (pos.x < 0 || pos.x > canvas.width) return;
+        if (pos.y < 0 || pos.y > canvas.height) return;
         if (gameStarted)
         {
         if (stopped) start = Date.now();
         pausetimer = false;
         stopped = false;
-        let pos = getMousePos(canvas, e);
         for (let i = 0; i < 5; i++)
         {
             if (Math.hypot(pos.x-circles[i][0], pos.y-circles[i][1]) < 26)
             {
                 score++;
                 document.getElementById("score").innerHTML = score;
-                circles[i] = randomPosition();
+                let goodFlag;
+                do
+                {
+                    goodFlag = true;
+                    circles[i] = randomPosition();
+                    for (let j = 0; j < 5; j++)
+                    {
+                        if (j != i && Math.hypot(circles[i][0]-circles[j][0], circles[i][1]-circles[j][1]) < 51) goodFlag = false;
+                    }
+                } while (!goodFlag)
                 break;
             } 
         }
