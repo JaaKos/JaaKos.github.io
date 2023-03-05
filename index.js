@@ -44,9 +44,8 @@ window.addEventListener('load', ()=>{
             {
                 if (j != i && Math.hypot(circles[i][0]-circles[j][0], circles[i][1]-circles[j][1]) < 51)
                 {
-                    let d = Math.sqrt(Math.pow(circles[i][0] - circles[j][0], 2) + Math.pow(circles[i][1] - circles[j][1], 2));
-                    let nx = (circles[j][0] - circles[i][0]) / d;
-                    let ny = (circles[j][1] - circles[i][1]) / d; 
+                    let nx = (circles[j][0] - circles[i][0]) / Math.hypot(circles[i][0]-circles[j][0], circles[i][1]-circles[j][1]);
+                    let ny = (circles[j][1] - circles[i][1]) / Math.hypot(circles[i][0]-circles[j][0], circles[i][1]-circles[j][1]); 
                     let p = 2 * (circles[i][2] * nx + circles[i][3] * ny - circles[j][2] * nx - circles[j][3] * ny) / 2;
                     circles[i][2] = circles[i][2] - p * nx; 
                     circles[i][3] = circles[i][3] - p * ny; 
