@@ -1,2 +1,2 @@
 # jaakos.github.io
-website
+A website for html/css/js testing
