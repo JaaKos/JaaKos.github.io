@@ -18,7 +18,7 @@ window.addEventListener('load', ()=>{
 
     function randomPosition()
     {
-        return [Math.abs(Math.random()*canvas.width-100)+50, Math.abs(Math.random()*canvas.height-100)+50];
+        return [Math.abs(Math.random()*canvas.width-100)+50, Math.abs(Math.random()*canvas.height-100)+50, (Math.random()-0.5)*3, (Math.random()-0.5)*3];
     }
 
     function drawCircles()
@@ -40,7 +40,18 @@ window.addEventListener('load', ()=>{
     {
         if (!pausetimer)
         {
-            timeleft = timeleft-0.1;
+            timeleft = timeleft-0.003;
+            canvas.height = canvas.height;
+            canvas.width = canvas.width;
+            for (let i = 0; i < 5; i++)
+            {
+                if (circles[i][0] < 25 || circles[i][0] > canvas.width-25) circles[i][2] *= -1;
+                if (circles[i][1] < 25 || circles[i][1] > canvas.height-25) circles[i][3] *= -1;
+                circles[i][0] += circles[i][2];
+                circles[i][1] += circles[i][3];
+            }
+            ctx.clearRect(0,0, canvas.height, canvas.width);
+            drawCircles();
             document.getElementById("time").innerHTML = timeleft.toPrecision(2);
             if (timeleft < 0.1)
             {
@@ -65,7 +76,7 @@ window.addEventListener('load', ()=>{
         score = 0;
         timervar = setInterval(() => {
             timer();
-        }, 100);
+        }, 3);
         canvas.height = canvas.height;
         canvas.width = canvas.width;
         ctx.clearRect(0,0, canvas.height, canvas.width);
@@ -77,8 +88,6 @@ window.addEventListener('load', ()=>{
         if (gameStarted)
         {
         pausetimer = false;
-        canvas.height = canvas.height;
-        canvas.width = canvas.width;
         for (let i = 0; i < 5; i++)
         {
             if (Math.hypot(e.x-circles[i][0]-10, e.y-circles[i][1]-10) < 26)
@@ -89,8 +98,6 @@ window.addEventListener('load', ()=>{
                 break;
             } 
         }
-        ctx.clearRect(0,0, canvas.height, canvas.width);
-        drawCircles();
         }
     };
 })
