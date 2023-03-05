@@ -2,6 +2,7 @@ window.addEventListener('load', ()=>{
     let score = 0;
     let timeleft = 10;
     let timervar;
+    let pausetimer = true;
     let button = document.getElementById("start");
     button.addEventListener("click", startgame);
     gameStarted = false;
@@ -37,18 +38,22 @@ window.addEventListener('load', ()=>{
 
     function timer()
     {
-        timeleft = timeleft-0.1;
-        document.getElementById("time").innerHTML = timeleft.toPrecision(2);
-        if (timeleft < 0.1)
+        if (!pausetimer)
         {
-            gameStarted = false;
-            document.getElementById("time").innerHTML = 0;
-            clearInterval(timervar);
-        } 
+            timeleft = timeleft-0.1;
+            document.getElementById("time").innerHTML = timeleft.toPrecision(2);
+            if (timeleft < 0.1)
+            {
+                gameStarted = false;
+                document.getElementById("time").innerHTML = 0;
+                clearInterval(timervar);
+            } 
+        }
     }  
 
     function startgame()
     {
+        pausetimer = true;
         clearInterval(timervar);
         timeleft = 10;
         gameStarted = true;
@@ -71,6 +76,7 @@ window.addEventListener('load', ()=>{
     {
         if (gameStarted)
         {
+        pausetimer = false;
         canvas.height = canvas.height;
         canvas.width = canvas.width;
         for (let i = 0; i < 5; i++)
