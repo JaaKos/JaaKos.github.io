@@ -12,9 +12,7 @@ window.addEventListener('load', ()=>{
     const ctx = canvas.getContext("2d");
     canvas.height = 720;
     canvas.width = 1366;
-
-    ctx.fillStyle = "black";
-
+    
     let circles = [];
 
     function randomPosition()
@@ -24,10 +22,14 @@ window.addEventListener('load', ()=>{
 
     function drawCircles()
     {
+        ctx.fillStyle = "red";
+        ctx.strokeStyle = "black";
         for (let i = 0; i < 5; i++)
         {
+            ctx.lineWidth = 10;
             ctx.beginPath();
             ctx.arc(circles[i][0], circles[i][1], 25, 0, 2 * Math.PI);
+            ctx.stroke();
             ctx.fill();
         }
     }
