@@ -88,15 +88,24 @@ window.addEventListener('load', ()=>{
         drawCircles();
     }
 
+    function getMousePos(canvas, e) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        };
+      }
+
     onmousedown = function(e)
     {
         if (gameStarted)
         {
         pausetimer = false;
         stopped = false;
+        let pos = getMousePos(canvas, e);
         for (let i = 0; i < 5; i++)
         {
-            if (Math.hypot(e.x-circles[i][0]-10, e.y-circles[i][1]-10) < 26)
+            if (Math.hypot(pos.x-circles[i][0]-10, pos.y-circles[i][1]-10) < 26)
             {
                 score++;
                 document.getElementById("score").innerHTML = score;
