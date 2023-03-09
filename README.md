@@ -1,2 +1,2 @@
 # jaakos.github.io
-A website for html/css/js testing
+A website for javascript/html5 canvas games.
