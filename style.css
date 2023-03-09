@@ -1,8 +1,24 @@
-#canvasid{
-    border: 2px solid black;
-    background-color: rgb(170, 170, 170);
+.flex-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+  }
+
+figure
+{
+    display: inline-block;
+    margin: 20px;
 }
 
-body{
-    background-color: rgb(110, 110, 110);
+figure figcaption
+{
+    text-align: center;
+    font-size: larger;
+    font-weight: bold;
+}
+
+body
+{
+    text-align: center;
+    background-color: #0000003d;
 }
