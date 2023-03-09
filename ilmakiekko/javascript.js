@@ -74,18 +74,18 @@ class vastustaja extends esine
     {
         if (Math.abs(this.xpos - pelivaline.xpos) < 10)
         {
-            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 1;
+            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 1 * (elapsedTime/7);
             else this.xpos += 1 * (elapsedTime/7);
         } 
         else if (Math.abs(this.xpos - pelivaline.xpos) < 30) 
         {
-            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 5;
-            else this.xpos += 3 * (elapsedTime/7);
+            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 5 * (elapsedTime/7);
+            else this.xpos += 5 * (elapsedTime/7);
         }
         else 
         {
-            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 10;
-            else this.xpos += 5 * (elapsedTime/7);
+            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 10 * (elapsedTime/7);
+            else this.xpos += 10 * (elapsedTime/7);
         }
     }
 }
