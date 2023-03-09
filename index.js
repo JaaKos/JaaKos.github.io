@@ -1,4 +1,6 @@
 window.addEventListener('load', ()=>{
+    let elapsedTime = Date.now();
+    let timeStamp = 0;
     let stopped = true;
     let score = 0;
     let timeleft = 10;
@@ -14,8 +16,6 @@ window.addEventListener('load', ()=>{
 
     const canvas = document.querySelector("#canvasid");
     const ctx = canvas.getContext("2d");
-    canvas.height = 720;
-    canvas.width = 1366;
     
     let circles = [];
 
@@ -26,9 +26,9 @@ window.addEventListener('load', ()=>{
 
     function drawCircles()
     {
-        canvas.height = canvas.height;
-        canvas.width = canvas.width;
-        ctx.clearRect(0,0, canvas.height, canvas.width);
+        elapsedTime = Date.now()-timeStamp;
+        timeStamp = Date.now();
+        ctx.clearRect(0,0, canvas.width, canvas.height);
         ctx.fillStyle = "red";
         ctx.strokeStyle = "black";
         for (let i = 0; i < 5; i++)
@@ -55,8 +55,8 @@ window.addEventListener('load', ()=>{
             }
             if (!stopped)
             {
-                circles[i][0] += circles[i][2];
-                circles[i][1] += circles[i][3];
+                circles[i][0] += circles[i][2]*(elapsedTime/7);
+                circles[i][1] += circles[i][3]*(elapsedTime/7);
             }
         }
         animationframe = requestAnimationFrame(drawCircles);
@@ -110,9 +110,7 @@ window.addEventListener('load', ()=>{
         timervar = setInterval(() => {
             timer();
         }, 15);
-        canvas.height = canvas.height;
-        canvas.width = canvas.width;
-        ctx.clearRect(0,0, canvas.height, canvas.width);
+        ctx.clearRect(0,0, canvas.width, canvas.height);
         drawCircles();
     }
 
