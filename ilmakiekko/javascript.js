@@ -100,12 +100,13 @@ class kiekko extends esine
         if (this.ypos < this.radius + 1 || this.ypos > canvas.height-this.radius-1) this.speed.y *= -1;
         for (let i = 0; i < ohjaimet.length; i++)
         {
-            if (Math.hypot(this.xpos-ohjaimet[i].xpos, this.ypos-ohjaimet[i].ypos) < this.radius + ohjaimet[i].radius)
+            let distance = Math.hypot(this.xpos-ohjaimet[i].xpos, this.ypos-ohjaimet[i].ypos);
+            if (distance < this.radius + ohjaimet[i].radius)
             {
-                let angle = Math.atan2(this.xpos-ohjaimet[i].xpos, this.ypos-ohjaimet[i].ypos);
-                this.speed.x = Math.sin(angle)*10;
-                this.speed.y = Math.cos(angle)*10;
-                super.setPos(this.xpos+=Math.sin(angle)*(this.radius+ohjaimet[i].radius), this.ypos+=Math.cos(angle)*(this.radius+ohjaimet[i].radius));
+                let collisionAngle = Math.atan2(this.ypos-ohjaimet[i].ypos, this.xpos-ohjaimet[i].xpos);
+                this.speed.x = Math.cos(collisionAngle)*10;
+                this.speed.y = Math.sin(collisionAngle)*10;
+                super.setPos(this.xpos+=Math.cos(collisionAngle)*(ohjaimet[i].radius-this.radius), this.ypos+=Math.sin(collisionAngle)*(ohjaimet[i].radius-this.radius));
             }
         }
     }
