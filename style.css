@@ -1,8 +1,9 @@
-.flex-container {
+.flex-container 
+{
     display: flex;
     align-items: baseline;
     justify-content: center;
-  }
+}
 
 figure
 {
