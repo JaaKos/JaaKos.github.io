@@ -72,6 +72,7 @@ class vastustaja extends esine
 {
     updateStatus()
     {
+        if (Math.abs(this.xpos - pelivaline.xpos) < 1) return;
         if (Math.abs(this.xpos - pelivaline.xpos) < 10)
         {
             if (this.xpos - pelivaline.xpos > 0) this.xpos -= 1 * (elapsedTime/7);
