@@ -84,8 +84,8 @@ class vastustaja extends esine
         }
         else 
         {
-            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 10 * (elapsedTime/7);
-            else this.xpos += 10 * (elapsedTime/7);
+            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 9 * (elapsedTime/7);
+            else this.xpos += 9 * (elapsedTime/7);
         }
     }
 }
