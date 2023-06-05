@@ -13,9 +13,19 @@ window.addEventListener('load', ()=>{
     document.getElementById("time").innerHTML = timeleft;
     let animationframe = null;
     let start;
+    let scaleValue;
 
     const canvas = document.querySelector("#canvasid");
     const ctx = canvas.getContext("2d");
+
+    if (window.devicePixelRatio !== 1){
+        scaleValue = (1/window.devicePixelRatio);
+        ctx.canvas.width *= scaleValue;
+        ctx.canvas.height *= scaleValue;
+    }
+    else {
+        scaleValue = 1;
+    }
     
     let circles = [];
 
@@ -33,9 +43,9 @@ window.addEventListener('load', ()=>{
         ctx.strokeStyle = "black";
         for (let i = 0; i < 5; i++)
         {
-            ctx.lineWidth = 10;
+            ctx.lineWidth = 10*scaleValue;
             ctx.beginPath();
-            ctx.arc(circles[i][0], circles[i][1], 25, 0, 2 * Math.PI);
+            ctx.arc(circles[i][0], circles[i][1], 25*scaleValue, 0, 2 * Math.PI);
             ctx.stroke();
             ctx.fill();
             if (circles[i][0] < 25 || circles[i][0] > canvas.width-25) circles[i][2] *= -1;
@@ -55,8 +65,8 @@ window.addEventListener('load', ()=>{
             }
             if (!stopped)
             {
-                circles[i][0] += circles[i][2]*(elapsedTime/7);
-                circles[i][1] += circles[i][3]*(elapsedTime/7);
+                circles[i][0] += circles[i][2]*(elapsedTime/7)*scaleValue;
+                circles[i][1] += circles[i][3]*(elapsedTime/7)*scaleValue;
             }
         }
         animationframe = requestAnimationFrame(drawCircles);
@@ -134,7 +144,7 @@ window.addEventListener('load', ()=>{
         stopped = false;
         for (let i = 0; i < 5; i++)
         {
-            if (Math.hypot(pos.x-circles[i][0], pos.y-circles[i][1]) < 26)
+            if (Math.hypot(pos.x-circles[i][0], pos.y-circles[i][1]) < 26*scaleValue)
             {
                 score++;
                 document.getElementById("score").innerHTML = score;

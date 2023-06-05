@@ -6,6 +6,16 @@ let vastustajanMaalit = 0;
 document.getElementById("vastustajanMaalit").innerHTML = vastustajanMaalit;
 let pelaajanMaalit = 0;
 document.getElementById("pelaajanMaalit").innerHTML = pelaajanMaalit;
+let scaleValue;
+
+if (window.devicePixelRatio !== 1){
+    scaleValue = (1/window.devicePixelRatio);
+    ctx.canvas.width *= scaleValue;
+    ctx.canvas.height *= scaleValue;
+}
+else {
+    scaleValue = 1;
+}
 
 class esine
 {
@@ -35,9 +45,9 @@ class esine
     draw(ctx)
     {
         ctx.fillStyle = this.color;
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 5*scaleValue;
         ctx.beginPath();
-        ctx.arc(this.xpos, this.ypos, this.radius, 0, Math.PI*2, false);
+        ctx.arc(this.xpos, this.ypos, this.radius*scaleValue, 0, Math.PI*2, false);
         ctx.stroke();
         ctx.fill();
     }
@@ -49,21 +59,21 @@ class ohjattava extends esine
     {
         onmousemove = (e) =>
         {
-            let previousFramePos = {x:this.xpos, y:this.ypos};
+            //let previousFramePos = {x:this.xpos, y:this.ypos};
             let pos = getMousePos(canvas, e);
             if (pos.x < 25 || pos.x > canvas.width-this.radius)
             {
-                super.setSpeed({x:0, y:0});
+                //super.setSpeed({x:0, y:0});
                 return;
             } 
             if (pos.y < 25 || pos.y > canvas.height-this.radius) 
             {
-                super.setSpeed({x:0, y:0});
+                //super.setSpeed({x:0, y:0});
                 return;
             } 
             super.setPos(pos.x, pos.y);
-            let speed = {x:this.xpos - previousFramePos.x, y:this.ypos - previousFramePos.y};
-            super.setSpeed(speed);
+            //let speed = {x:this.xpos - previousFramePos.x, y:this.ypos - previousFramePos.y};
+            //super.setSpeed(speed);
         }
     }
 }
@@ -75,18 +85,18 @@ class vastustaja extends esine
         if (Math.abs(this.xpos - pelivaline.xpos) < 1) return;
         if (Math.abs(this.xpos - pelivaline.xpos) < 10)
         {
-            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 1 * (elapsedTime/7);
-            else this.xpos += 1 * (elapsedTime/7);
+            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 1 * (elapsedTime/7)*scaleValue;
+            else this.xpos += 1 * (elapsedTime/7)*scaleValue;
         } 
         else if (Math.abs(this.xpos - pelivaline.xpos) < 30) 
         {
-            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 5 * (elapsedTime/7);
-            else this.xpos += 5 * (elapsedTime/7);
+            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 5 * (elapsedTime/7)*scaleValue;
+            else this.xpos += 5 * (elapsedTime/7) *scaleValue;
         }
         else 
         {
-            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 9 * (elapsedTime/7);
-            else this.xpos += 9 * (elapsedTime/7);
+            if (this.xpos - pelivaline.xpos > 0) this.xpos -= 9 * (elapsedTime/7)*scaleValue;
+            else this.xpos += 9 * (elapsedTime/7)*scaleValue;
         }
     }
 }
@@ -138,7 +148,7 @@ class maali
     {
         ctx.beginPath();
         ctx.fillStyle = "cyan";
-        ctx.fillRect(this.xpos, this.ypos, 180, 40);
+        ctx.fillRect(this.xpos, this.ypos, 180*scaleValue, 40*scaleValue);
     }
 }
 
